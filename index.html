@@ -10,6 +10,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- Meta Pixel Code (Placeholder - Reemplaza 'PIXEL_ID' con tu ID real) -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -263,6 +281,13 @@
               Manufacturado bajo certificación GMP en USA.
             </li>
           </ul>
+
+          <!-- Health Disclaimer Box -->
+          <div class="health-disclaimer-box reveal">
+            <i class="fas fa-hand-holding-medical"></i>
+            <p><strong>Aviso Importante:</strong> Este producto es un suplemento dietario. No es un medicamento. No debe utilizarse para el diagnóstico, tratamiento o cura de ninguna enfermedad. Consulte a su médico antes de consumir.</p>
+          </div>
+
           <a href="#pedido" class="btn-outline">
             Ver la oferta <i class="fas fa-arrow-right"></i>
           </a>
@@ -323,6 +348,58 @@
               <span class="testi-loc">Cali, Valle del Cauca</span>
             </div>
             <span class="testi-verified">✓ Verificado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ SECTION ============ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="reveal" style="text-align: center; margin-bottom: 50px;">
+        <span class="section-tag">Dudas frecuentes</span>
+        <h2 class="section-title">Preguntas <em>comunes.</em></h2>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>¿Es seguro el L-Treonato de Magnesio?</span>
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Sí, es totalmente seguro. Es un compuesto desarrollado por investigadores del MIT y fabricado bajo estrictos estándares GMP en USA. No tiene efectos secundarios laxantes como otros tipos de magnesio.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>¿Cuánto demora el envío en llegar?</span>
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Realizamos envíos a toda Colombia. El tiempo estimado de entrega es de 2 a 4 días hábiles dependiendo de tu ciudad. Te enviamos la guía de rastreo por WhatsApp.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>¿Cómo se realiza el pago contraentrega?</span>
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Es muy sencillo: haces tu pedido hoy y pagas en efectivo únicamente cuando el repartidor llegue a tu casa con el producto. Sin riesgos.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>¿Qué pasa si el producto no me funciona?</span>
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Nuestra garantía Vida Sana cubre cualquier defecto de fábrica. Si tienes dudas sobre cómo tomarlo para obtener mejores resultados, nuestro equipo de soporte te asesorará por WhatsApp.</p>
           </div>
         </div>
       </div>
@@ -446,9 +523,9 @@
         <div class="footer-col">
           <h6>Legal</h6>
           <ul>
-            <li><a href="#">Política de Privacidad</a></li>
-            <li><a href="#">Términos y Condiciones</a></li>
-            <li><a href="#">Política de Devoluciones</a></li>
+            <li><a href="politica-privacidad.html">Política de Privacidad</a></li>
+            <li><a href="terminos-condiciones.html">Términos y Condiciones</a></li>
+            <li><a href="politica-devoluciones.html">Política de Devoluciones</a></li>
           </ul>
         </div>
       </div>

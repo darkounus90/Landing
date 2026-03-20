@@ -27,15 +27,36 @@ function selectPack(el) {
   document.getElementById('cantidad').value = el.dataset.val;
 }
 
-// ── Countdown Timer ───────────────────────────
-function startTimer(seconds, el) {
-  let t = seconds;
+// ── Countdown Timer (Persistent) ─────────────────
+function startTimer(durationSeconds, el) {
+  const storageKey = 'vida_sana_timer_end';
+  let endTime = localStorage.getItem(storageKey);
+
+  const now = Math.floor(Date.now() / 1000);
+
+  if (!endTime || now > parseInt(endTime)) {
+    endTime = now + durationSeconds;
+    localStorage.setItem(storageKey, endTime);
+  } else {
+    endTime = parseInt(endTime);
+  }
+
   const tick = () => {
-    const m = String(Math.floor(t / 60)).padStart(2, '0');
-    const s = String(t % 60).padStart(2, '0');
+    const currentNow = Math.floor(Date.now() / 1000);
+    let remaining = endTime - currentNow;
+
+    if (remaining < 0) {
+      // Reiniciar si llega a cero (opcional, o detenerlo)
+      endTime = Math.floor(Date.now() / 1000) + durationSeconds;
+      localStorage.setItem(storageKey, endTime);
+      remaining = durationSeconds;
+    }
+
+    const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+    const s = String(remaining % 60).padStart(2, '0');
     el.textContent = `${m}:${s}`;
-    if (--t < 0) t = seconds;
   };
+
   tick();
   setInterval(tick, 1000);
 }
@@ -261,6 +282,29 @@ function openSuccessModal(nombre) {
   m.addEventListener('click', e => { if (e.target === m) m.remove(); });
 }
 
+// ── FAQ Accordion ─────────────────────────────
+function initFaq() {
+  const items = document.querySelectorAll('.faq-item');
+  items.forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+      
+      // Close all others
+      items.forEach(i => {
+        i.classList.remove('active');
+        i.querySelector('.faq-answer').style.maxHeight = null;
+      });
+
+      if (!isActive) {
+        item.classList.add('active');
+        const ans = item.querySelector('.faq-answer');
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+      }
+    });
+  });
+}
+
 // ── Init ──────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   // Timer
@@ -271,6 +315,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initHamburger();
   initReveal();
   initForm();
+  initFaq();
 
   // First notification after 4s, then random 18–30s
   setTimeout(showNotif, 4000);
