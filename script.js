@@ -304,16 +304,16 @@ function openSuccessModal(nombre) {
         font-family: 'Syne', sans-serif;
         font-size: 1.6rem;
         font-weight: 800;
-        color: var(--forest);
+        color: var(--gold);
         margin-bottom: 14px;
         letter-spacing: -0.5px;
       }
-      #vsModal p { font-size: 0.93rem; color: var(--muted); line-height: 1.75; margin-bottom: 28px; }
-      #vsModal strong { color: var(--terra); }
+      #vsModal p { font-size: 0.93rem; color: var(--ink); opacity: 0.8; line-height: 1.75; margin-bottom: 28px; }
+      #vsModal strong { color: var(--gold-light); }
 
       #vsModal .close-btn {
-        background: var(--forest);
-        color: var(--cream);
+        background: var(--gold);
+        color: #000;
         border: none;
         border-radius: 50px;
         padding: 14px 32px;
@@ -321,9 +321,12 @@ function openSuccessModal(nombre) {
         font-size: 0.9rem;
         font-weight: 700;
         cursor: pointer;
-        transition: background 0.25s;
+        transition: transform 0.2s, background 0.2s;
       }
-      #vsModal .close-btn:hover { background: var(--terra); }
+      #vsModal .close-btn:hover { 
+        background: var(--gold-light);
+        transform: scale(1.05);
+      }
     </style>
     <div class="box">
       <span class="emoji">🎉</span>
