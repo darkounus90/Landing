@@ -12,7 +12,6 @@ const CONFIG = {
   whatsappNumber: '573001234567',   // ← CAMBIA ESTO por tu número real
 
   // 📦 CONFIGURACIÓN DROPI
-  dropiToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcHAuZHJvcGkuY286ODAiLCJpYXQiOjE3NzQwMjc2NTcsImV4cCI6NDkyOTcwMTI1NywibmJmIjoxNzc0MDI3NjU3LCJqdGkiOiJQN0ZZS2VKb0tXWTk1V09FIiwic3ViIjo3MDAyNTksInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEiLCJhdWQiOiJXT09DT01FUkNFIiwidG9rZW5fdHlwZSI6IklOVEVHUkFUSU9OUyIsIndiX2lkIjoxLCJpbnRlZ3JhdGlvbl90eXBlIjoiV09PQ09NRVJDRSIsImludGVncmF0aW9uX3R5cGVfaWQiOjEsImlwX3VybCI6W10sImludGVncmF0aW9uX3VybCI6Imh0dHBzOlwvXC92aWRhc2FuYXMub25saW5lIn0.7gF1fPI-rY4TGjkJbrT8KTdbZ4Bp4FJG2rv_qH6TPJc',
   dropiProductId: 1815410, // ID del L-Treonato en Dropi
 
   // Texto del pack según el valor seleccionado
@@ -195,11 +194,10 @@ function initForm() {
     };
 
     try {
-      const response = await fetch('https://api.dropi.co/api/integrations/woocomerce/orders', {
+      const response = await fetch('order-proxy.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${CONFIG.dropiToken}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });
