@@ -1086,21 +1086,28 @@ header.scrolled {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  border: 2px solid var(--gold);
-  color: var(--gold);
+  border: 1.5px solid rgba(245, 240, 230, 0.3);
+  background: rgba(22, 22, 18, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--ink);
   font-family: 'Syne', sans-serif;
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   letter-spacing: 0.5px;
-  padding: 14px 28px;
+  padding: 14px 30px;
   border-radius: 50px;
   text-decoration: none;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline:hover {
-  background: var(--gold);
-  color: #0e0e0b;
+  background: rgba(245, 240, 230, 0.1);
+  border-color: var(--ink);
+  color: var(--ink);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 /* ── TESTIMONIALS ────────────────────────── */
