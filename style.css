@@ -249,6 +249,37 @@ header.scrolled {
   min-height: clamp(520px, 70vh, 820px);
 }
 
+/* ── HEALTH DISCLAIMER BOX ────────────────── */
+.health-disclaimer-box {
+  background: rgba(201, 162, 39, 0.05);
+  border: 1px dashed rgba(201, 162, 39, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 24px 0 32px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.health-disclaimer-box i {
+  color: var(--gold);
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+.health-disclaimer-box p {
+  font-size: 0.82rem !important;
+  line-height: 1.5 !important;
+  color: rgba(245, 240, 230, 0.6) !important;
+  margin-bottom: 0 !important;
+}
+
+.health-disclaimer-box strong {
+  color: var(--gold-light);
+  display: block;
+  margin-bottom: 4px;
+}
+
 .hero-label {
   display: inline-flex;
   align-items: center;
