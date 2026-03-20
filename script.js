@@ -11,6 +11,10 @@ const CONFIG = {
   // Ejemplo Colombia: 573001234567
   whatsappNumber: '573001234567',   // ← CAMBIA ESTO por tu número real
 
+  // 📦 CONFIGURACIÓN DROPI
+  dropiToken: 'PEGA_AQUI_EL_TOKEN_QUE_COPIASTE',
+  dropiProductId: 1815410, // ID del L-Treonato en Dropi
+
   // Texto del pack según el valor seleccionado
   packs: {
     '1': '1 Frasco (100 Softgels) — $89.900',
@@ -134,26 +138,35 @@ function showNotif() {
   setTimeout(() => popup.classList.remove('show'), 5500);
 }
 
-// ── Form logic ────────────────────────────────
+// ── Form logic (Dropi + WhatsApp) ─────────────
 function initForm() {
   const form = document.getElementById('orderForm');
   if (!form) return;
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
 
-    const btn   = document.getElementById('submitBtn');
+    const btn = document.getElementById('submitBtn');
     const [line1, line2] = btn.querySelectorAll('span');
 
     // Collect order data
     const order = {
-      nombre:   document.getElementById('nombre').value.trim(),
-      telefono: document.getElementById('telefono').value.trim(),
-      ciudad:   document.getElementById('ciudad').value.trim(),
-      depto:    document.getElementById('depto').value.trim(),
-      direccion:document.getElementById('direccion').value.trim(),
-      cantidad: document.getElementById('cantidad').value,
+      nombre:    document.getElementById('nombre').value.trim(),
+      telefono:  document.getElementById('telefono').value.trim(),
+      ciudad:    document.getElementById('ciudad').value.trim(),
+      depto:     document.getElementById('depto').value.trim(),
+      direccion: document.getElementById('direccion').value.trim(),
+      cantidad:  parseInt(document.getElementById('cantidad').value) || 1,
     };
+
+    // Split name and lastname
+    const nameParts = order.nombre.split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName  = nameParts.slice(1).join(' ') || '.';
+
+    // Prices mapping
+    const prices = { 1: 89900, 2: 169900, 3: 239900 };
+    const totalPrice = prices[order.cantidad] || 89900;
 
     // Loading state
     btn.disabled = true;
@@ -161,50 +174,96 @@ function initForm() {
     line1.textContent = 'Enviando pedido…';
     line2.textContent = 'Un momento por favor';
 
-    // Build WhatsApp message
-    const packDesc = CONFIG.packs[order.cantidad] || order.cantidad + ' frasco(s)';
-    const msg = [
-      `🛒 *NUEVO PEDIDO — Vida Sana*`,
-      ``,
-      `👤 *Nombre:* ${order.nombre}`,
-      `📱 *Celular:* ${order.telefono}`,
-      `📦 *Pedido:* ${packDesc}`,
-      ``,
-      `📍 *Dirección de entrega:*`,
-      `${order.direccion}`,
-      `${order.ciudad}, ${order.depto}`,
-      ``,
-      `💳 *Pago:* Contraentrega al recibir`,
-      `✅ *Pedido confirmado desde la web*`,
-    ].join('\n');
+    // 📦 Dropi API Payload
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      phone: order.telefono,
+      city: order.ciudad,
+      department: order.depto,
+      address: order.direccion,
+      total: totalPrice,
+      products: [
+        {
+          id: CONFIG.dropiProductId,
+          quantity: order.cantidad,
+          price: 89900 // Precio base por unidad para Dropi
+        }
+      ],
+      payment_method: "contraentrega",
+      note: `Pedido desde Web - Pack x${order.cantidad}`
+    };
 
-    const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    try {
+      const response = await fetch('https://api.dropi.co/api/integrations/woocomerce/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${CONFIG.dropiToken}`
+        },
+        body: JSON.stringify(payload)
+      });
 
-    // Short delay then redirect + show modal
-    setTimeout(() => {
+      const data = await response.json();
+
+      if (response.ok) {
+        // SUCCESS — Order created on Dropi
+        btn.style.opacity = '1';
+        btn.style.background = '#28a745'; // Green
+        line1.textContent = '¡Pedido Recibido! ✓';
+        line2.textContent = 'Procesando confirmación…';
+
+        // Prepare WhatsApp message (Keep this as fallback/secondary)
+        const packDesc = CONFIG.packs[order.cantidad] || order.cantidad + ' frasco(s)';
+        const msg = [
+          `🛒 *NUEVO PEDIDO — Vida Sana*`,
+          ``,
+          `🆔 *ID Dropi:* ${data.id || data.order_id || 'N/A'}`,
+          `👤 *Nombre:* ${order.nombre}`,
+          `📱 *Celular:* ${order.telefono}`,
+          `📦 *Pedido:* ${packDesc}`,
+          ``,
+          `📍 *Dirección de entrega:*`,
+          `${order.direccion}`,
+          `${order.ciudad}, ${order.depto}`,
+          ``,
+          `💳 *Pago:* Contraentrega al recibir`,
+          `✅ *Pedido registrado en Dropi*`,
+        ].join('\n');
+
+        const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+
+        setTimeout(() => {
+          // Open WhatsApp if you want specific confirmation
+          window.open(waUrl, '_blank');
+          
+          // Show success modal
+          openSuccessModal(order.nombre);
+
+          // Reset everything after modal
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.background = '';
+            line1.textContent = 'Confirmar Pedido';
+            line2.textContent = 'Pago en casa al recibir';
+            form.reset();
+            document.querySelectorAll('.promo-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
+            document.getElementById('cantidad').value = '1';
+          }, 4000);
+        }, 1500);
+
+      } else {
+        throw new Error(data.message || 'Error en respuesta de servidor');
+      }
+
+    } catch (error) {
+      console.error('Error Dropi:', error);
+      btn.disabled = false;
       btn.style.opacity = '1';
-      btn.style.background = 'var(--leaf)';
-      line1.textContent = '¡Pedido Confirmado! ✓';
-      line2.textContent = 'Abriendo WhatsApp…';
-
-      // Open WhatsApp
-      window.open(waUrl, '_blank');
-
-      // Show success modal
-      openSuccessModal(order.nombre);
-
-      // Reset form after 5.5s
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.style.background = '';
-        line1.textContent = 'Confirmar Pedido';
-        line2.textContent = 'Pago en casa al recibir';
-        form.reset();
-        document.querySelectorAll('.promo-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
-        document.getElementById('cantidad').value = '1';
-      }, 5500);
-
-    }, 1200);
+      line1.textContent = 'Error al enviar';
+      line2.textContent = 'Intenta de nuevo';
+      alert('Hubo un problema al procesar tu pedido. Por favor intenta de nuevo o contáctanos por WhatsApp.');
+    }
   });
 }
 
