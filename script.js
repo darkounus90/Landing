@@ -12,7 +12,7 @@ const CONFIG = {
   whatsappNumber: '573001234567',   // ← CAMBIA ESTO por tu número real
 
   // 📦 CONFIGURACIÓN DROPI
-  dropiToken: 'PEGA_AQUI_EL_TOKEN_QUE_COPIASTE',
+  dropiToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcHAuZHJvcGkuY286ODAiLCJpYXQiOjE3NzQwMjc2NTcsImV4cCI6NDkyOTcwMTI1NywibmJmIjoxNzc0MDI3NjU3LCJqdGkiOiJQN0ZZS2VKb0tXWTk1V09FIiwic3ViIjo3MDAyNTksInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEiLCJhdWQiOiJXT09DT01FUkNFIiwidG9rZW5fdHlwZSI6IklOVEVHUkFUSU9OUyIsIndiX2lkIjoxLCJpbnRlZ3JhdGlvbl90eXBlIjoiV09PQ09NRVJDRSIsImludGVncmF0aW9uX3R5cGVfaWQiOjEsImlwX3VybCI6W10sImludGVncmF0aW9uX3VybCI6Imh0dHBzOlwvXC92aWRhc2FuYXMub25saW5lIn0.7gF1fPI-rY4TGjkJbrT8KTdbZ4Bp4FJG2rv_qH6TPJc',
   dropiProductId: 1815410, // ID del L-Treonato en Dropi
 
   // Texto del pack según el valor seleccionado
@@ -75,7 +75,7 @@ function initHeader() {
 
 // ── Hamburger menu ────────────────────────────
 function initHamburger() {
-  const btn   = document.getElementById('hamburger');
+  const btn = document.getElementById('hamburger');
   const links = document.getElementById('navLinks');
   if (!btn || !links) return;
 
@@ -119,12 +119,12 @@ function initReveal() {
 
 // ── Social Proof Notification ─────────────────
 const CITIES = ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Bucaramanga', 'Cartagena', 'Pereira', 'Manizales', 'Ibagué', 'Cúcuta'];
-const NAMES  = ['Andrés M.', 'Claudia R.', 'Martha B.', 'Julián C.', 'Patricia G.', 'Roberto H.', 'Sandra L.', 'Felipe T.', 'Natalia P.', 'Laura F.'];
+const NAMES = ['Andrés M.', 'Claudia R.', 'Martha B.', 'Julián C.', 'Patricia G.', 'Roberto H.', 'Sandra L.', 'Felipe T.', 'Natalia P.', 'Laura F.'];
 
 function showNotif() {
-  const popup    = document.getElementById('notifPopup');
-  const textEl   = document.getElementById('notifText');
-  const timeEl   = document.getElementById('notifTime');
+  const popup = document.getElementById('notifPopup');
+  const textEl = document.getElementById('notifText');
+  const timeEl = document.getElementById('notifTime');
   if (!popup) return;
 
   const city = CITIES[Math.floor(Math.random() * CITIES.length)];
@@ -151,18 +151,18 @@ function initForm() {
 
     // Collect order data
     const order = {
-      nombre:    document.getElementById('nombre').value.trim(),
-      telefono:  document.getElementById('telefono').value.trim(),
-      ciudad:    document.getElementById('ciudad').value.trim(),
-      depto:     document.getElementById('depto').value.trim(),
+      nombre: document.getElementById('nombre').value.trim(),
+      telefono: document.getElementById('telefono').value.trim(),
+      ciudad: document.getElementById('ciudad').value.trim(),
+      depto: document.getElementById('depto').value.trim(),
       direccion: document.getElementById('direccion').value.trim(),
-      cantidad:  parseInt(document.getElementById('cantidad').value) || 1,
+      cantidad: parseInt(document.getElementById('cantidad').value) || 1,
     };
 
     // Split name and lastname
     const nameParts = order.nombre.split(' ');
     const firstName = nameParts[0] || '';
-    const lastName  = nameParts.slice(1).join(' ') || '.';
+    const lastName = nameParts.slice(1).join(' ') || '.';
 
     // Prices mapping
     const prices = { 1: 89900, 2: 169900, 3: 239900 };
@@ -236,7 +236,7 @@ function initForm() {
         setTimeout(() => {
           // Open WhatsApp if you want specific confirmation
           window.open(waUrl, '_blank');
-          
+
           // Show success modal
           openSuccessModal(order.nombre);
 
@@ -348,7 +348,7 @@ function initFaq() {
     const btn = item.querySelector('.faq-question');
     btn.addEventListener('click', () => {
       const isActive = item.classList.contains('active');
-      
+
       // Close all others
       items.forEach(i => {
         i.classList.remove('active');
