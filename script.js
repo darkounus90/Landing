@@ -1,33 +1,26 @@
 /* =============================================
-   VIDA SANA — script.js v3.0
+   RETO 21 DIAS — script.js
    ============================================= */
 
 // ══════════════════════════════════════════════
 //  ⚙️  CONFIGURACIÓN — cambia solo estos datos
 // ══════════════════════════════════════════════
 const CONFIG = {
-  // Número de WhatsApp donde recibirás los pedidos
-  // Formato: código de país + número, SIN + ni espacios
-  // Ejemplo Colombia: 573001234567
-  whatsappNumber: '573001234567',   // ← CAMBIA ESTO por tu número real
+  whatsappNumber: '573001234567', // Tu número real
 
-  // Texto del pack según el valor seleccionado
   packs: {
-    '1': '1 Frasco (100 Softgels) — $89.900',
-    '2': '2 Frascos — $169.900',
-    '3': '3 Frascos — $239.900',
+    '1': 'Reto 21 Días Básico — $27.00 USD',
+    '2': 'Reto 21 Días VIP — $37.00 USD',
   }
 };
 // ══════════════════════════════════════════════
 
-// ── Pack selector ─────────────────────────────
 function selectPack(el) {
   document.querySelectorAll('.promo-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('cantidad').value = el.dataset.val;
 }
 
-// ── Countdown Timer ───────────────────────────
 function startTimer(seconds, el) {
   let t = seconds;
   const tick = () => {
@@ -40,7 +33,6 @@ function startTimer(seconds, el) {
   setInterval(tick, 1000);
 }
 
-// ── Header scroll effect ──────────────────────
 function initHeader() {
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
@@ -48,7 +40,6 @@ function initHeader() {
   }, { passive: true });
 }
 
-// ── Hamburger menu ────────────────────────────
 function initHamburger() {
   const btn   = document.getElementById('hamburger');
   const links = document.getElementById('navLinks');
@@ -70,16 +61,13 @@ function initHamburger() {
     if (open) links.style.display = 'none';
   });
 
-  // Close when a link is clicked
   links.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => { links.style.display = 'none'; });
   });
 }
 
-// ── Scroll Reveal ─────────────────────────────
 function initReveal() {
   const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -92,9 +80,8 @@ function initReveal() {
   els.forEach(el => observer.observe(el));
 }
 
-// ── Social Proof Notification ─────────────────
-const CITIES = ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Bucaramanga', 'Cartagena', 'Pereira', 'Manizales', 'Ibagué', 'Cúcuta'];
-const NAMES  = ['Andrés M.', 'Claudia R.', 'Martha B.', 'Julián C.', 'Patricia G.', 'Roberto H.', 'Sandra L.', 'Felipe T.', 'Natalia P.', 'Laura F.'];
+const COUNTRIES = ['México', 'Colombia', 'España', 'Estados Unidos', 'Perú', 'Chile', 'Ecuador', 'Argentina'];
+const NAMES  = ['Andrea M.', 'Claudia R.', 'Marta B.', 'Julia C.', 'Patricia G.', 'Roberta H.', 'Sandra L.', 'Fernanda T.', 'Natalia P.', 'Laura F.'];
 
 function showNotif() {
   const popup    = document.getElementById('notifPopup');
@@ -102,18 +89,17 @@ function showNotif() {
   const timeEl   = document.getElementById('notifTime');
   if (!popup) return;
 
-  const city = CITIES[Math.floor(Math.random() * CITIES.length)];
+  const country = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
   const name = NAMES[Math.floor(Math.random() * NAMES.length)];
   const mins = Math.floor(Math.random() * 10) + 1;
 
-  textEl.innerHTML = `<strong>${name}</strong> en ${city} acaba de pedir`;
+  textEl.innerHTML = `<strong>${name}</strong> en ${country} acaba de unirse`;
   timeEl.textContent = `Hace ${mins} minuto${mins > 1 ? 's' : ''}`;
 
   popup.classList.add('show');
   setTimeout(() => popup.classList.remove('show'), 5500);
 }
 
-// ── Form logic ────────────────────────────────
 function initForm() {
   const form = document.getElementById('orderForm');
   if (!form) return;
@@ -124,70 +110,55 @@ function initForm() {
     const btn   = document.getElementById('submitBtn');
     const [line1, line2] = btn.querySelectorAll('span');
 
-    // Collect order data
     const order = {
       nombre:   document.getElementById('nombre').value.trim(),
+      email:    document.getElementById('email').value.trim(),
       telefono: document.getElementById('telefono').value.trim(),
-      ciudad:   document.getElementById('ciudad').value.trim(),
-      depto:    document.getElementById('depto').value.trim(),
-      direccion:document.getElementById('direccion').value.trim(),
       cantidad: document.getElementById('cantidad').value,
     };
 
-    // Loading state
     btn.disabled = true;
     btn.style.opacity = '0.75';
-    line1.textContent = 'Enviando pedido…';
+    line1.textContent = 'Procesando...';
     line2.textContent = 'Un momento por favor';
 
-    // Build WhatsApp message
-    const packDesc = CONFIG.packs[order.cantidad] || order.cantidad + ' frasco(s)';
+    const packDesc = CONFIG.packs[order.cantidad] || 'Reto 21 Días VIP';
     const msg = [
-      `🛒 *NUEVO PEDIDO — Vida Sana*`,
+      `🚀 *NUEVO REGISTRO — RETO 21 DÍAS*`,
       ``,
       `👤 *Nombre:* ${order.nombre}`,
-      `📱 *Celular:* ${order.telefono}`,
-      `📦 *Pedido:* ${packDesc}`,
+      `📧 *Email:* ${order.email}`,
+      `📱 *WhatsApp:* ${order.telefono}`,
+      `📦 *Plan Seleccionado:* ${packDesc}`,
       ``,
-      `📍 *Dirección de entrega:*`,
-      `${order.direccion}`,
-      `${order.ciudad}, ${order.depto}`,
-      ``,
-      `💳 *Pago:* Contraentrega al recibir`,
-      `✅ *Pedido confirmado desde la web*`,
+      `✅ *Quiero recibir el enlace de pago seguro para unirme al reto*`,
     ].join('\n');
 
     const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
 
-    // Short delay then redirect + show modal
     setTimeout(() => {
       btn.style.opacity = '1';
       btn.style.background = 'var(--leaf)';
-      line1.textContent = '¡Pedido Confirmado! ✓';
+      line1.textContent = '¡Registro Exitoso! ✓';
       line2.textContent = 'Abriendo WhatsApp…';
 
-      // Open WhatsApp
       window.open(waUrl, '_blank');
-
-      // Show success modal
       openSuccessModal(order.nombre);
 
-      // Reset form after 5.5s
       setTimeout(() => {
         btn.disabled = false;
         btn.style.background = '';
-        line1.textContent = 'Confirmar Pedido';
-        line2.textContent = 'Pago en casa al recibir';
+        line1.textContent = 'Acceder al Reto Ahora';
+        line2.textContent = 'Pago seguro e inmediato';
         form.reset();
-        document.querySelectorAll('.promo-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
-        document.getElementById('cantidad').value = '1';
+        document.querySelectorAll('.promo-pill').forEach((p, i) => p.classList.toggle('active', i === 1)); // VIP is default
+        document.getElementById('cantidad').value = '2';
       }, 5500);
 
     }, 1200);
   });
 }
 
-// ── Success Modal ─────────────────────────────
 function openSuccessModal(nombre) {
   const existing = document.getElementById('vsModal');
   if (existing) existing.remove();
@@ -198,7 +169,7 @@ function openSuccessModal(nombre) {
     <style>
       #vsModal {
         position: fixed; inset: 0; z-index: 99999;
-        background: rgba(14,34,24,0.8);
+        background: rgba(16,16,16,0.8);
         backdrop-filter: blur(8px);
         display: flex; align-items: center; justify-content: center;
         padding: 20px;
@@ -214,7 +185,7 @@ function openSuccessModal(nombre) {
         max-width: 460px;
         width: 100%;
         text-align: center;
-        box-shadow: 0 40px 80px rgba(14,34,24,0.3);
+        box-shadow: 0 40px 80px rgba(0,0,0,0.3);
         animation: mSlideUp 0.45s cubic-bezier(0.34,1.4,0.64,1) 0.1s both;
       }
       @keyframes mSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -232,7 +203,7 @@ function openSuccessModal(nombre) {
       #vsModal strong { color: var(--terra); }
 
       #vsModal .close-btn {
-        background: var(--forest);
+        background: var(--terra);
         color: var(--cream);
         border: none;
         border-radius: 50px;
@@ -243,17 +214,17 @@ function openSuccessModal(nombre) {
         cursor: pointer;
         transition: background 0.25s;
       }
-      #vsModal .close-btn:hover { background: var(--terra); }
+      #vsModal .close-btn:hover { opacity: 0.9; }
     </style>
     <div class="box">
       <span class="emoji">🎉</span>
-      <h3>¡Listo, ${nombre ? nombre.split(' ')[0] : 'amigo/a'}!</h3>
+      <h3>¡Felicidades, ${nombre ? nombre.split(' ')[0] : 'futura alumna'}!</h3>
       <p>
-        Tu pedido en <strong>Vida Sana</strong> ha sido registrado.<br>
-        Te contactaremos por <strong>WhatsApp</strong> para confirmar los detalles del envío.<br><br>
-        <strong>Recuerda: pagas solo cuando recibes tu pedido en casa. 🏠</strong>
+        Tu lugar está casi asegurado.<br>
+        Te estamos redirigiendo a <strong>WhatsApp</strong> para enviarte el enlace de pago seguro.<br><br>
+        <strong>Recibirás el acceso en tu correo (${document.getElementById('email').value}) inmediatamente después de realizar tu pago.</strong>
       </p>
-      <button class="close-btn" onclick="document.getElementById('vsModal').remove()">¡Entendido!</button>
+      <button class="close-btn" onclick="document.getElementById('vsModal').remove()">Cerrar</button>
     </div>
   `;
 
@@ -261,9 +232,7 @@ function openSuccessModal(nombre) {
   m.addEventListener('click', e => { if (e.target === m) m.remove(); });
 }
 
-// ── Init ──────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Timer
   const timerEl = document.getElementById('timer');
   if (timerEl) startTimer(15 * 60, timerEl);
 
@@ -272,7 +241,6 @@ window.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initForm();
 
-  // First notification after 4s, then random 18–30s
   setTimeout(showNotif, 4000);
   setInterval(showNotif, Math.random() * 12000 + 18000);
 });
