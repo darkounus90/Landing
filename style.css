@@ -631,7 +631,7 @@ header.scrolled {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--mint);
+  color: #0e0e0b;
   white-space: nowrap;
 }
 
