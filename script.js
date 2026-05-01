@@ -100,137 +100,7 @@ function showNotif() {
   setTimeout(() => popup.classList.remove('show'), 5500);
 }
 
-function initForm() {
-  const form = document.getElementById('orderForm');
-  if (!form) return;
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-
-    const btn   = document.getElementById('submitBtn');
-    const [line1, line2] = btn.querySelectorAll('span');
-
-    const order = {
-      nombre:   document.getElementById('nombre').value.trim(),
-      email:    document.getElementById('email').value.trim(),
-      telefono: document.getElementById('telefono').value.trim(),
-      cantidad: document.getElementById('cantidad').value,
-    };
-
-    btn.disabled = true;
-    btn.style.opacity = '0.75';
-    line1.textContent = 'Procesando...';
-    line2.textContent = 'Un momento por favor';
-
-    const packDesc = CONFIG.packs[order.cantidad] || 'Reto 21 Días VIP';
-    const msg = [
-      `🚀 *NUEVO REGISTRO — RETO 21 DÍAS*`,
-      ``,
-      `👤 *Nombre:* ${order.nombre}`,
-      `📧 *Email:* ${order.email}`,
-      `📱 *WhatsApp:* ${order.telefono}`,
-      `📦 *Plan Seleccionado:* ${packDesc}`,
-      ``,
-      `✅ *Quiero recibir el enlace de pago seguro para unirme al reto*`,
-    ].join('\n');
-
-    const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
-
-    setTimeout(() => {
-      btn.style.opacity = '1';
-      btn.style.background = 'var(--leaf)';
-      line1.textContent = '¡Registro Exitoso! ✓';
-      line2.textContent = 'Abriendo WhatsApp…';
-
-      window.open(waUrl, '_blank');
-      openSuccessModal(order.nombre);
-
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.style.background = '';
-        line1.textContent = 'Acceder al Reto Ahora';
-        line2.textContent = 'Pago seguro e inmediato';
-        form.reset();
-        document.querySelectorAll('.promo-pill').forEach((p, i) => p.classList.toggle('active', i === 1)); // VIP is default
-        document.getElementById('cantidad').value = '2';
-      }, 5500);
-
-    }, 1200);
-  });
-}
-
-function openSuccessModal(nombre) {
-  const existing = document.getElementById('vsModal');
-  if (existing) existing.remove();
-
-  const m = document.createElement('div');
-  m.id = 'vsModal';
-  m.innerHTML = `
-    <style>
-      #vsModal {
-        position: fixed; inset: 0; z-index: 99999;
-        background: rgba(16,16,16,0.8);
-        backdrop-filter: blur(8px);
-        display: flex; align-items: center; justify-content: center;
-        padding: 20px;
-        animation: mFadeIn 0.35s ease;
-      }
-      @keyframes mFadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-      #vsModal .box {
-        background: var(--off-white);
-        border: 1.5px solid var(--border);
-        border-radius: 28px;
-        padding: clamp(32px, 6vw, 60px);
-        max-width: 460px;
-        width: 100%;
-        text-align: center;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.3);
-        animation: mSlideUp 0.45s cubic-bezier(0.34,1.4,0.64,1) 0.1s both;
-      }
-      @keyframes mSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-      #vsModal .emoji { font-size: 3.5rem; display: block; margin-bottom: 16px; }
-      #vsModal h3 {
-        font-family: 'Syne', sans-serif;
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: var(--forest);
-        margin-bottom: 14px;
-        letter-spacing: -0.5px;
-      }
-      #vsModal p { font-size: 0.93rem; color: var(--muted); line-height: 1.75; margin-bottom: 28px; }
-      #vsModal strong { color: var(--terra); }
-
-      #vsModal .close-btn {
-        background: var(--terra);
-        color: var(--cream);
-        border: none;
-        border-radius: 50px;
-        padding: 14px 32px;
-        font-family: 'Syne', sans-serif;
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.25s;
-      }
-      #vsModal .close-btn:hover { opacity: 0.9; }
-    </style>
-    <div class="box">
-      <span class="emoji">🎉</span>
-      <h3>¡Felicidades, ${nombre ? nombre.split(' ')[0] : 'futura alumna'}!</h3>
-      <p>
-        Tu lugar está casi asegurado.<br>
-        Te estamos redirigiendo a <strong>WhatsApp</strong> para enviarte el enlace de pago seguro.<br><br>
-        <strong>Recibirás el acceso en tu correo (${document.getElementById('email').value}) inmediatamente después de realizar tu pago.</strong>
-      </p>
-      <button class="close-btn" onclick="document.getElementById('vsModal').remove()">Cerrar</button>
-    </div>
-  `;
-
-  document.body.appendChild(m);
-  m.addEventListener('click', e => { if (e.target === m) m.remove(); });
-}
+// Removed initForm and openSuccessModal as they are no longer needed.
 
 window.addEventListener('DOMContentLoaded', () => {
   const timerEl = document.getElementById('timer');
@@ -239,7 +109,6 @@ window.addEventListener('DOMContentLoaded', () => {
   initHeader();
   initHamburger();
   initReveal();
-  initForm();
 
   setTimeout(showNotif, 4000);
   setInterval(showNotif, Math.random() * 12000 + 18000);
